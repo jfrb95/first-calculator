@@ -1,66 +1,83 @@
 const GLOBAL = (function(){
     const display = document.querySelector(".display");
     const buttons = document.querySelector(".buttons");
-    buttons.addEventListener("click", changeVariables);
-    let num1 = "";
-    let num2 = "";
-    let operator = null;
-    let displayValue = 0;
+    
+    let displayValue = "0";
+    
+    const defaultState = function() {
+        const num1 = "0";
+        const num2 = "0";
+        const operator = null;
+        const state = 1;
 
-    function changeVariables(event) {
-        const target = event.target;
-        const classList = event.target.classList;
-        if (classList.contains("number")) {
-            if (!operator) {
-                addCharToNum1(target.textContent);
-            } else {
-                addCharToNum2(target.textContent);
-            }
-            console.log("num1:", num1, "num2:", num2);
-        } else if (classList.contains("operator")) {
-            switch (true) {
-                case classList.contains("add"):
-                    operator = add;
-                    console.log("add");
-                    break;
-                case classList.contains("subtract"):
-                    operator = subtract;
-                    console.log("subtract");
-                    break;
-                case classList.contains("multiply"):
-                    operator = multiply;
-                    console.log("multiply");
-                    break;
-                case classList.contains("divide"):
-                    operator = divide;
-                    console.log("divide");
-                    break;
-                default:
-                    return new Error("Invalid operator");
-            }
-        } else if (classList.contains("clear")) {
-            num1 = "";
-            num2 = "";
-            operator = null;
-            setDisplay("0");
-            console.log("num1:", num1, "num2:", num2, operator, displayValue);
+        return {//getters
+            getNum1() {
+                return num1
+            },
+            
+            getNum2() {
+                return num2
+            },
+
+            getOperator() {
+                return operator
+            },
+
+            getState() {
+                return state
+            },
+        }
+    }
+    
+    const operatorPressedState = function(num, operator) {
+        const num1 = num;
+        const num2 = "0";
+        const operator = operator;
+        const state = 2;
+
+        return {//getters
+            getNum1() {
+                return num1
+            },
+            
+            getNum2() {
+                return num2
+            },
+
+            getOperator() {
+                return operator
+            },
+
+            getState() {
+                return state
+            },
         }
     }
 
+    const equalsPressedState = function(num) {
+        const num1 = num;
+        const num2 = "0";
+        const operator = null;
+        const state = 3;
 
-    function operate() {
-        if (operator) {
-            operator(Number(num1), Number(num2));
+        return {//getters
+            getNum1() {
+                return num1
+            },
+            
+            getNum2() {
+                return num2
+            },
+
+            getOperator() {
+                return operator
+            },
+
+            getState() {
+                return state
+            },
         }
     }
-
-    function setOperator(f) {
-        operator = f;
-    }
-
-    function addCharToNum1(num) {num1 = num1.concat(num);}
-
-    function addCharToNum2(num) {num2 = num2.concat(num);}
 
 
     function add(num1, num2) {return num1 + num2}
