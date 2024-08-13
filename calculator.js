@@ -1,44 +1,49 @@
 const GLOBAL = (function(){
     const display = document.querySelector(".display");
     const buttons = document.querySelector(".buttons");
-    buttons.addEventListener("click", changeVariable);
+    buttons.addEventListener("click", changeVariables);
     let num1 = "";
     let num2 = "";
     let operator = null;
     let displayValue = 0;
 
-    function changeVariable(event) {
+    function changeVariables(event) {
         const target = event.target;
-        if (target.classList.contains("number")) {
+        const classList = event.target.classList;
+        if (classList.contains("number")) {
             if (!operator) {
                 addCharToNum1(target.textContent);
             } else {
                 addCharToNum2(target.textContent);
             }
             console.log("num1:", num1, "num2:", num2);
-        } else if (target.classList.contains("operator")) {
-            
-            switch (target.textContent) {
-                case "+":
+        } else if (classList.contains("operator")) {
+            switch (true) {
+                case classList.contains("add"):
                     operator = add;
                     console.log("add");
                     break;
-                case "-":
+                case classList.contains("subtract"):
                     operator = subtract;
                     console.log("subtract");
                     break;
-                case "x":
+                case classList.contains("multiply"):
                     operator = multiply;
                     console.log("multiply");
                     break;
-                case "/":
+                case classList.contains("divide"):
                     operator = divide;
                     console.log("divide");
                     break;
                 default:
                     return new Error("Invalid operator");
             }
-
+        } else if (classList.contains("clear")) {
+            num1 = "";
+            num2 = "";
+            operator = null;
+            setDisplay("0");
+            console.log("num1:", num1, "num2:", num2, operator, displayValue);
         }
     }
 
@@ -76,7 +81,7 @@ const GLOBAL = (function(){
         updateDisplayValue()
     }
 
-    function populateDisplay(str) {
+    function setDisplay(str) {
         display.textContent = str;
         updateDisplayValue()
     }
