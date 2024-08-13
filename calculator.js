@@ -1,7 +1,9 @@
 const GLOBAL = (function(){
-    const display = document.querySelector(".display");
-    const buttons = document.querySelector(".buttons");
-    
+    const upperDisplay = document.querySelector(".upper-display");
+    const lowerDisplay = document.querySelector(".lower-display");
+    const numberButtons = document.querySelector(".number-buttons");
+    numberButtons.addEventListener("click", addToNumber);
+
     let displayValue = "0";
     
     const defaultState = function() {
@@ -29,10 +31,10 @@ const GLOBAL = (function(){
         }
     }
     
-    const operatorPressedState = function(num, operator) {
+    const operatorPressedState = function(num, op) {
         const num1 = num;
         const num2 = "0";
-        const operator = operator;
+        const operator = op;
         const state = 2;
 
         return {//getters
@@ -79,6 +81,18 @@ const GLOBAL = (function(){
         }
     }
 
+    function addToNumber(event) {
+        const num = event.target.textContent;
+        if (displayValue === "0") {
+            displayValue = num;
+        } else {
+            displayValue = displayValue.concat(num);
+        }
+    }
+
+    function updateLowerDisplay(str) {
+        lowerDisplay.textContent = str;
+    }
 
     function add(num1, num2) {return num1 + num2}
 
@@ -87,22 +101,6 @@ const GLOBAL = (function(){
     function multiply(num1, num2) {return num1 * num2}
 
     function divide(num1, num2) {return num1 / num2}
-
-    function updateDisplayValue() {
-        displayValue = display.textContent;
-    }
-
-    function updateDisplay(str) {
-        const text = document.createTextNode(str);
-        display.appendChild(text);
-        updateDisplayValue()
-    }
-
-    function setDisplay(str) {
-        display.textContent = str;
-        updateDisplayValue()
-    }
-
 
     return {}
 }());
