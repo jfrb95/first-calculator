@@ -2,8 +2,13 @@ const GLOBAL = (function(){
     const upperDisplay = document.querySelector(".upper-display");
     const lowerDisplay = document.querySelector(".lower-display");
     const numberButtons = document.querySelector(".number-buttons");
+    const operatorButtons = document.querySelector(".operator-buttons");
+    const clearButton = document.querySelector(".clear");
+    const equalsButton = document.querySelector(".equals");
     numberButtons.addEventListener("click", addToNumber);
+    operatorButtons.addEventListener("click", toOperatorState);
 
+    let state = defaultState();
     let displayValue = "0";
     
     const defaultState = function() {
@@ -79,6 +84,35 @@ const GLOBAL = (function(){
                 return state
             },
         }
+    }
+
+    function toDefaultState() {
+        state = defaultState();
+    }
+
+    function toEqualsState(event) {
+        state = equalsPressedState(displayValue);
+    }
+
+    function toOperatorState(event) {
+        switch (event.target.textContent) {
+            case "+":
+                operator = add;
+                break;
+            case "-":
+                operator = subtract;
+                break;
+            case "*":
+                operator = multiply;
+                break;
+            case "/":
+                operator = divide;
+                break;
+            default:
+                return new Error("Invalid Operator");
+        }
+
+        state = operatorPressedState(displayValue, operator);
     }
 
     function addToNumber(event) {
