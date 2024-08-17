@@ -9,6 +9,8 @@ const GLOBAL = (function(){
     const equalsButton = document.querySelector(".equals");
     numberButtons.addEventListener("click", numberListenerFunction);
     operatorButtons.addEventListener("click", operatorListenerFunction);
+    clearButton.addEventListener("click", clearListenerFunction);
+    equalsButton.addEventListener("click", equalsListenerFunction);
 
     //state 1:
     // click number to add digits to num1
@@ -19,10 +21,6 @@ const GLOBAL = (function(){
     function state1() {
         log("State1 initiated");
 
-        setLowerDisplayValue("0");
-        setLowerDisplay(lowerDisplayValue);
-        setUpperDisplayValue("");
-        setUpperDisplay(upperDisplayValue);
         let num1 = "0";
         const num2 = "0";
         const operator = null;
@@ -52,6 +50,10 @@ const GLOBAL = (function(){
 
             onClearPress() {
                 log("State1 clear pressed");
+                setLowerDisplayValue("0");
+                setLowerDisplay(lowerDisplayValue);
+                setUpperDisplayValue("");
+                setUpperDisplay(upperDisplayValue);
                 state = state1();
             },
         }
@@ -98,10 +100,15 @@ const GLOBAL = (function(){
                 setLowerDisplay(lowerDisplayValue);
                 setUpperDisplayValue(`${num1} ${getOperatorSymbol(operator)} ${num2} = `)
                 setUpperDisplay(upperDisplayValue);
+                state = state3(result);
             },
 
             onClearPress() {
                 log("State 2 clear pressed");
+                setLowerDisplayValue("0");
+                setLowerDisplay(lowerDisplayValue);
+                setUpperDisplayValue("");
+                setUpperDisplay(upperDisplayValue);
                 state = state1();
             },
         }
@@ -116,26 +123,40 @@ const GLOBAL = (function(){
 
     function state3(num) {
         log("State3 initiated");
-        let num1 = num;
+        const num1 = num;
         let num2 = "0";
         let operator = null;
         const stateId = 3;
 
         return {
-            onNumberPress() {
-
+            onNumberPress(str) {
+                log("State3 number pressed");
+                state = state1();
+                setLowerDisplayValue(str);
+                setLowerDisplay(lowerDisplayValue);
             },
 
-            onOperatorPress() {
+            onOperatorPress(op) {
+                log("State3 operator pressed");
 
+                setLowerDisplayValue("0");
+                setLowerDisplay(lowerDisplayValue);
+                setUpperDisplayValue(`${num1} ${getOperatorSymbol(op)}`);
+                setUpperDisplay(upperDisplayValue);
+                state = state2(num1, op);
             },
 
             onEqualsPress() {
-
+                log("State3 equals pressed");
             },
 
             onClearPress() {
-
+                log("State3 clear pressed");
+                setLowerDisplayValue("0");
+                setLowerDisplay(lowerDisplayValue);
+                setUpperDisplayValue("");
+                setUpperDisplay(upperDisplayValue);
+                state = state1();
             },
         }
     }
@@ -183,7 +204,7 @@ const GLOBAL = (function(){
         }
     }
 
-    function onEqualsPress(event) {
+    function equalsListenerFunction(event) {
         state.onEqualsPress();
     }
 
