@@ -10,7 +10,7 @@ The calculator is currently barebones; it meets the requirements and does not ex
  - add a backspace option
  - add keyboard support
 
-If I revisit this project I will do these, as this is the last project on the foundation course, I am keen to move on to learn more.
+If I revisit this project I will do these. Howeverm as this is the last project on the foundation course, I am keen to move on.
 
 I used the 'State' design pattern as practice, since I am learning about design patterns at the moment long-side the Odin Project. This was not necessary, but it did make the logic and code much easier to work with, and was a good learning experience.
 
