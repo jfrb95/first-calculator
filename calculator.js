@@ -17,6 +17,12 @@ const GLOBAL = (function(){
     // click clear to reset num1
 
     function state1() {
+        log("State1 initiated");
+
+        setLowerDisplayValue("0");
+        setLowerDisplay(lowerDisplayValue);
+        setUpperDisplayValue("");
+        setUpperDisplay(upperDisplayValue);
         let num1 = "0";
         const num2 = "0";
         const operator = null;
@@ -36,6 +42,7 @@ const GLOBAL = (function(){
                 setLowerDisplayValue("0");
                 setLowerDisplay(lowerDisplayValue);
                 setUpperDisplayValue(`${num1} ${getOperatorSymbol(op)}`);
+                setUpperDisplay(upperDisplayValue);
                 state = state2(num1, op);
             },
 
@@ -54,32 +61,48 @@ const GLOBAL = (function(){
     // click number to add digits to num2
     // operator is stored from previous state
     // click operator to call operate() on previously stored operator
-    //     , print result to top display, and reset state 2 with the 
+    //     , print result to bottom display, and reset state 2 with the 
     //     result as num1 and the clicked operator as the operator
     // click equals to go to state 3
     // click clear to go to state 1
 
     function state2(num, op) {
-        let num1 = num;
+        log("State2 initiated");
+        const num1 = num;
         let num2 = "0";
-        let operator = op;
+        const operator = op;
         const stateId = 2;
 
         return {
-            onNumberPress() {
-
+            onNumberPress(str) {
+                log("State2 number pressed");
+                num2 = num2.concat(str);
+                setLowerDisplayValue(num2);
+                setLowerDisplay(lowerDisplayValue);
             },
 
-            onOperatorPress() {
-
+            onOperatorPress(op) {
+                log("State2 operator pressed)");
+                const result = operate(num1, num2, operator);
+                setLowerDisplayValue(result);
+                setLowerDisplay(lowerDisplayValue);
+                setUpperDisplayValue(`${result} ${getOperatorSymbol(op)}`)
+                setUpperDisplay(upperDisplayValue);
+                state = state2(result, op);
             },
 
             onEqualsPress() {
-
+                log("State2 equals pressed");
+                const result = operate(num1, num2, operator);
+                setLowerDisplayValue(result);
+                setLowerDisplay(lowerDisplayValue);
+                setUpperDisplayValue(`${num1} ${getOperatorSymbol(operator)} ${num2} = `)
+                setUpperDisplay(upperDisplayValue);
             },
 
             onClearPress() {
-
+                log("State 2 clear pressed");
+                state = state1();
             },
         }
     }
@@ -92,6 +115,7 @@ const GLOBAL = (function(){
     // click clear to go to state 1
 
     function state3(num) {
+        log("State3 initiated");
         let num1 = num;
         let num2 = "0";
         let operator = null;
@@ -114,6 +138,11 @@ const GLOBAL = (function(){
 
             },
         }
+    }
+
+
+    function operate(num1, num2, op) {
+        return op(num1, num2);
     }
 
     //initial variables
