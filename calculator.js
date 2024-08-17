@@ -41,6 +41,7 @@ const GLOBAL = (function(){
 
             onClearPress() {
                 log("State1 clear pressed");
+                state = state1();
             },
         }
     }
