@@ -1,4 +1,5 @@
 const GLOBAL = (function(){
+    const log = console.log;
 
     const upperDisplay = document.querySelector(".upper-display");
     const lowerDisplay = document.querySelector(".lower-display");
@@ -6,8 +7,8 @@ const GLOBAL = (function(){
     const operatorButtons = document.querySelector(".operator-buttons");
     const clearButton = document.querySelector(".clear");
     const equalsButton = document.querySelector(".equals");
-    numberButtons.addEventListener("click", addToNumberListenerFunction);
-
+    numberButtons.addEventListener("click", numberListenerFunction);
+    operatorButtons.addEventListener("click", operatorListenerFunction);
 
     //state 1:
     // click number to add digits to num1
@@ -17,27 +18,29 @@ const GLOBAL = (function(){
 
     function state1() {
         let num1 = "0";
-        let num2 = "0";
-        let operator = null;
-        const state = 1;
+        const num2 = "0";
+        const operator = null;
+        const stateId = 1;
 
         return {
             onNumberPress(str) {
+                log("State1 number pressed");
                 num1 = num1.concat(str);
                 lowerDisplayValue = num1;
                 lowerDisplay.textContent = lowerDisplayValue;
             },
 
-            onOperatorPress() {
-                state = state2(/*FILL IN*/)
+            onOperatorPress(op) {
+                log("State1 operator pressed");
+                state = state2(num1, op);
             },
 
             onEqualsPress() {
-
+                log("State1 equals pressed");
             },
 
             onClearPress() {
-
+                log("State1 clear pressed");
             },
         }
     }
@@ -51,6 +54,31 @@ const GLOBAL = (function(){
     // click equals to go to state 3
     // click clear to go to state 1
 
+    function state2(num, op) {
+        let num1 = num;
+        let num2 = "0";
+        let operator = op;
+        const stateId = 2;
+
+        return {
+            onNumberPress() {
+
+            },
+
+            onOperatorPress() {
+
+            },
+
+            onEqualsPress() {
+
+            },
+
+            onClearPress() {
+
+            },
+        }
+    }
+
     //state 3
     // num1 is result of equals
     // click number to clear num1 and begin new num1
@@ -58,15 +86,66 @@ const GLOBAL = (function(){
     // click equals nothing happens
     // click clear to go to state 1
 
+    function state3(num) {
+        let num1 = num;
+        let num2 = "0";
+        let operator = null;
+        const stateId = 3;
+
+        return {
+            onNumberPress() {
+
+            },
+
+            onOperatorPress() {
+
+            },
+
+            onEqualsPress() {
+
+            },
+
+            onClearPress() {
+
+            },
+        }
+    }
+
+    //initial variables
+
     let state = state1();
     let lowerDisplayValue = "0";
     let upperDisplayValue = "";
 
     //listener functions
 
-    function addToNumberListenerFunction(event) {
-        if (event.target.classList.contains(number)) {
+    function numberListenerFunction(event) {
+        if (event.target.classList.contains("number")) {
             state.onNumberPress(event.target.textContent);
+        }
+    }
+
+    function operatorListenerFunction(event) {
+        if (event.target.classList.contains("operator")) {
+            let op;
+            switch (event.target.textContent) {
+                case "+":
+                    op = add;
+                    break;
+                case "-":
+                    op = subtract;
+                    break;
+                case "x":
+                    op = multiply;
+                    break;
+                case "/":
+                    op = divide;
+                    break;
+                default:
+                    return new Error("Invalid Operator");
+            }
+
+            onOperatorPress(op);
         }
     }
 
