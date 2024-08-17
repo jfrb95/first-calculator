@@ -26,12 +26,16 @@ const GLOBAL = (function(){
             onNumberPress(str) {
                 log("State1 number pressed");
                 num1 = num1.concat(str);
-                lowerDisplayValue = num1;
-                lowerDisplay.textContent = lowerDisplayValue;
+                setLowerDisplayValue(num1);
+                setLowerDisplay(lowerDisplayValue);
             },
 
             onOperatorPress(op) {
                 log("State1 operator pressed");
+        
+                setLowerDisplayValue("0");
+                setLowerDisplay(lowerDisplayValue);
+                setUpperDisplayValue(`${num1} ${getOperatorSymbol(op)}`);
                 state = state2(num1, op);
             },
 
@@ -146,10 +150,55 @@ const GLOBAL = (function(){
                     return new Error("Invalid Operator");
             }
 
-            onOperatorPress(op);
+            state.onOperatorPress(op);
         }
     }
 
+    function onEqualsPress(event) {
+        state.onEqualsPress();
+    }
+
+    function clearListenerFunction(event) {
+        state.onClearPress();
+    }
+
+    //display value functions
+    function setLowerDisplayValue(str) {
+        lowerDisplayValue = str;
+    }
+
+    function setLowerDisplay(str) {
+        lowerDisplay.textContent = str;
+    }
+
+    function setUpperDisplayValue(str) {
+        upperDisplayValue = str;
+    }
+
+    function setUpperDisplay(str) {
+        upperDisplay.textContent = str;
+    }
+
+    function getOperatorSymbol(op) {
+        let result;
+        switch (op) {
+            case add:
+                result = "+";
+                break;
+            case subtract:
+                result = "-";
+                break;
+            case multiply:
+                result = "x";
+                break;
+            case divide:
+                result = "/";
+                break;
+            default:
+                return new Error("Invalid operator");
+        }
+        return result;
+    }
 
     //operation functions
 
