@@ -1,140 +1,85 @@
 const GLOBAL = (function(){
+
     const upperDisplay = document.querySelector(".upper-display");
     const lowerDisplay = document.querySelector(".lower-display");
     const numberButtons = document.querySelector(".number-buttons");
     const operatorButtons = document.querySelector(".operator-buttons");
     const clearButton = document.querySelector(".clear");
     const equalsButton = document.querySelector(".equals");
-    numberButtons.addEventListener("click", addToNumber);
-    operatorButtons.addEventListener("click", toOperatorState);
+    numberButtons.addEventListener("click", addToNumberListenerFunction);
 
-    let state = defaultState();
-    let displayValue = "0";
-    
-    const defaultState = function() {
-        const num1 = "0";
-        const num2 = "0";
-        const operator = null;
+
+    //state 1:
+    // click number to add digits to num1
+    // click operator to switch to state 2
+    // click equals and no change happens
+    // click clear to reset num1
+
+    function state1() {
+        let num1 = "0";
+        let num2 = "0";
+        let operator = null;
         const state = 1;
 
-        return {//getters
-            getNum1() {
-                return num1
-            },
-            
-            getNum2() {
-                return num2
+        return {
+            onNumberPress(str) {
+                num1 = num1.concat(str);
+                lowerDisplayValue = num1;
+                lowerDisplay.textContent = lowerDisplayValue;
             },
 
-            getOperator() {
-                return operator
+            onOperatorPress() {
+                state = state2(/*FILL IN*/)
             },
 
-            getState() {
-                return state
-            },
-        }
-    }
-    
-    const operatorPressedState = function(num, op) {
-        const num1 = num;
-        const num2 = "0";
-        const operator = op;
-        const state = 2;
+            onEqualsPress() {
 
-        return {//getters
-            getNum1() {
-                return num1
-            },
-            
-            getNum2() {
-                return num2
             },
 
-            getOperator() {
-                return operator
-            },
+            onClearPress() {
 
-            getState() {
-                return state
             },
         }
     }
 
-    const equalsPressedState = function(num) {
-        const num1 = num;
-        const num2 = "0";
-        const operator = null;
-        const state = 3;
+    //state 2: 
+    // click number to add digits to num2
+    // operator is stored from previous state
+    // click operator to call operate() on previously stored operator
+    //     , print result to top display, and reset state 2 with the 
+    //     result as num1 and the clicked operator as the operator
+    // click equals to go to state 3
+    // click clear to go to state 1
 
-        return {//getters
-            getNum1() {
-                return num1
-            },
-            
-            getNum2() {
-                return num2
-            },
+    //state 3
+    // num1 is result of equals
+    // click number to clear num1 and begin new num1
+    // click operator to use current num1 and go to state 2
+    // click equals nothing happens
+    // click clear to go to state 1
 
-            getOperator() {
-                return operator
-            },
+    let state = state1();
+    let lowerDisplayValue = "0";
+    let upperDisplayValue = "";
 
-            getState() {
-                return state
-            },
+    //listener functions
+
+    function addToNumberListenerFunction(event) {
+        if (event.target.classList.contains(number)) {
+            state.onNumberPress(event.target.textContent);
         }
     }
 
-    function toDefaultState() {
-        state = defaultState();
-    }
 
-    function toEqualsState(event) {
-        state = equalsPressedState(displayValue);
-    }
+    //operation functions
 
-    function toOperatorState(event) {
-        switch (event.target.textContent) {
-            case "+":
-                operator = add;
-                break;
-            case "-":
-                operator = subtract;
-                break;
-            case "*":
-                operator = multiply;
-                break;
-            case "/":
-                operator = divide;
-                break;
-            default:
-                return new Error("Invalid Operator");
-        }
+    function add(num1, num2) {return Number(num1) + Number(num2)}
 
-        state = operatorPressedState(displayValue, operator);
-    }
+    function subtract(num1, num2) {return Number(num1) - Number(num2)}
 
-    function addToNumber(event) {
-        const num = event.target.textContent;
-        if (displayValue === "0") {
-            displayValue = num;
-        } else {
-            displayValue = displayValue.concat(num);
-        }
-    }
+    function multiply(num1, num2) {return Number(num1) * Number(num2)}
 
-    function updateLowerDisplay(str) {
-        lowerDisplay.textContent = str;
-    }
-
-    function add(num1, num2) {return num1 + num2}
-
-    function subtract(num1, num2) {return num1 - num2}
-
-    function multiply(num1, num2) {return num1 * num2}
-
-    function divide(num1, num2) {return num1 / num2}
+    function divide(num1, num2) {return Number(num1) / Number(num2)}
 
     return {}
 }());
