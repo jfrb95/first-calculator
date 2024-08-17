@@ -13,3 +13,5 @@ The calculator is currently barebones; it meets the requirements and does not ex
 If I revisit this project I will do these, as this is the last project on the foundation course, I am keen to move on to learn more.
 
 I used the 'State' design pattern as practice, since I am learning about design patterns at the moment long-side the Odin Project. This was not necessary, but it did make the logic and code much easier to work with, and was a good learning experience.
+
+Each state takes the form of a function. To switch the state, the program calls the function corrsponding to the desired state and passes in all relevant values. To perfom an action with a result that chagnes depending on the state, the program calls the current states version of that action, meaning the underlying operation of the program does not depend on what states there are, and more states could be added if there were a need.

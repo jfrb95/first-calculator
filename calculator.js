@@ -19,8 +19,6 @@ const GLOBAL = (function(){
     // click clear to reset num1
 
     function state1(num) {
-        log("State1 initiated");
-
         let num1 = num;
         const num2 = "0";
         const operator = null;
@@ -28,7 +26,6 @@ const GLOBAL = (function(){
 
         return {
             onNumberPress(str) {
-                log("State1 number pressed");
                 if (num1 === "0") {
                     num1 = str;
                 } else {
@@ -39,8 +36,6 @@ const GLOBAL = (function(){
             },
 
             onOperatorPress(op) {
-                log("State1 operator pressed");
-        
                 setLowerDisplayValue("0");
                 setLowerDisplay(lowerDisplayValue);
                 setUpperDisplayValue(`${num1} ${getOperatorSymbol(op)}`);
@@ -49,11 +44,9 @@ const GLOBAL = (function(){
             },
 
             onEqualsPress() {
-                log("State1 equals pressed");
             },
 
             onClearPress() {
-                log("State1 clear pressed");
                 setLowerDisplayValue("0");
                 setLowerDisplay(lowerDisplayValue);
                 setUpperDisplayValue(" ");
@@ -73,7 +66,6 @@ const GLOBAL = (function(){
     // click clear to go to state 1
 
     function state2(num, op) {
-        log("State2 initiated");
         const num1 = num;
         let num2 = "0";
         const operator = op;
@@ -81,7 +73,6 @@ const GLOBAL = (function(){
 
         return {
             onNumberPress(str) {
-                log("State2 number pressed");
                 if (num2 === "0") {
                     num2 = str;
                 } else {
@@ -92,7 +83,6 @@ const GLOBAL = (function(){
             },
 
             onOperatorPress(op) {
-                log("State2 operator pressed)");
                 const result = operate(num1, num2, operator);
                 if (result) {
                     setLowerDisplayValue(result);
@@ -106,7 +96,6 @@ const GLOBAL = (function(){
             },
 
             onEqualsPress() {
-                log("State2 equals pressed");
                 const result = operate(num1, num2, operator);
                 if (result) {
                     setLowerDisplayValue(result);
@@ -120,7 +109,6 @@ const GLOBAL = (function(){
             },
 
             onClearPress() {
-                log("State 2 clear pressed");
                 setLowerDisplayValue("0");
                 setLowerDisplay(lowerDisplayValue);
                 setUpperDisplayValue(" ");
@@ -138,7 +126,6 @@ const GLOBAL = (function(){
     // click clear to go to state 1
 
     function state3(num) {
-        log("State3 initiated");
         const num1 = num;
         let num2 = "0";
         let operator = null;
@@ -146,7 +133,6 @@ const GLOBAL = (function(){
 
         return {
             onNumberPress(str) {
-                log("State3 number pressed");
                 state = state1(str);
                 setLowerDisplayValue(str);
                 setLowerDisplay(lowerDisplayValue);
@@ -155,7 +141,6 @@ const GLOBAL = (function(){
             },
 
             onOperatorPress(op) {
-                log("State3 operator pressed");
 
                 setLowerDisplayValue("0");
                 setLowerDisplay(lowerDisplayValue);
@@ -165,11 +150,9 @@ const GLOBAL = (function(){
             },
 
             onEqualsPress() {
-                log("State3 equals pressed");
             },
 
             onClearPress() {
-                log("State3 clear pressed");
                 setLowerDisplayValue("0");
                 setLowerDisplay(lowerDisplayValue);
                 setUpperDisplayValue(" ");
@@ -186,9 +169,13 @@ const GLOBAL = (function(){
 
     //initial variables
 
-    let state = state1("0");
+    
     let lowerDisplayValue = "0";
+    setLowerDisplay(lowerDisplayValue);
     let upperDisplayValue = " ";
+    setUpperDisplayValue(upperDisplayValue);
+    let state = state1("0");
+
 
     //listener functions
 
